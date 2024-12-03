@@ -10,6 +10,7 @@ development:
   host: localhost
   database: furima_41800_development
 
+
 test:
   <<: *default
   adapter: mysql2
