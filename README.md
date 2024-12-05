@@ -45,7 +45,7 @@ Things you may want to cover:
 |condition_id        | integer | null: false |
 |shipping_fee_id     | integer | null: false |
 |prefecture_id       | integer | null: false |
-|delivering_day_id  | integer | null: false |
+|delivering_day_id   | integer | null: false |
 |price               | integer | null: false |
 |user                | references | null: false |
 
@@ -60,7 +60,7 @@ Things you may want to cover:
 | Column             | Type   | Options     |
 | ------------------ | ------ | ----------- |
 |item                | references | null: false  |
-|shipping_address    | references | null: false |
+|user                | references | null: false |
 
 ### Association
 - belongs_to :user
