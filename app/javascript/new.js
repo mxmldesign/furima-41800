@@ -1,3 +1,5 @@
+const price = () => {
+
 document.addEventListener("DOMContentLoaded", () => {
   const priceInput = document.getElementById("item-price")
   const feeDisplay = document.getElementById("add-tax-price")
@@ -18,3 +20,7 @@ document.addEventListener("DOMContentLoaded", () => {
     })
   }
 })
+}
+
+window.addEventListener("turbo:load", price);
+window.addEventListener("turbo:render", price);

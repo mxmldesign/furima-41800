@@ -8,7 +8,7 @@ class Item < ApplicationRecord
   belongs_to :delivering_day
 
   belongs_to :user
-  has_one :order
+  # has_one :order
 
   validates :title, presence: true,length: { maximum: 40 }
   validates :description, presence: true, length: { maximum: 1000 }
