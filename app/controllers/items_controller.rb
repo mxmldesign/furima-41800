@@ -1,6 +1,6 @@
 class ItemsController < ApplicationController
   before_action :authenticate_user!, only: [:new, :create, :edit, :update, :destroy]
-  before_action :set_item, only: [:show, :edit, :update]
+  before_action :set_item, only: [:show, :edit, :update, :destroy]
   before_action :move_to_index, except: [:index, :show, :new, :create]
   def index
     @items = Item.order('created_at DESC')
@@ -30,6 +30,14 @@ class ItemsController < ApplicationController
       redirect_to item_path
     else
       render :edit, status: :unprocessable_entity
+    end
+  end
+
+  def destroy
+    if @item.destroy
+      redirect_to root_path, notice: '投稿を削除しました。'
+    else
+      redirect_to item_path(@item), alert: '削除に失敗しました。'
     end
   end
 
