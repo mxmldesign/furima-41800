@@ -1,20 +1,21 @@
 class OrdersController < ApplicationController
   def index
-    
+    @order_shipping = OrderShipping.new
   end
 
   def create
-    @order = Order.create(order_params)
-    ShippingAddress.create(shipping_address_params)
-    redirect_to root_path
+    @order_shipping = OrderShipping.new(order_params)
+    if @order_shipping.valid?
+      @order_shipping.save
+      redirect_to root_path
+    else
+      render :index, status: :unprocessable_entity
+    end
   end
   
   private
-  def order_params
-    params.permit('#').merge(user_id: current_user.id)
-  end
 
-  def shipping_address_params
-    params.permit(:post_code, :prefecture_id, :city, :street, :building, :phone_number).merge(order_id: @order.id)
+  def order_params
+    params.require(:order_shipping).permit(:post_code, :prefecture_id, :city, :street, :building, :phone_number).merge(user_id: current_user.id, item_id: current_item.id )
   end
 end
