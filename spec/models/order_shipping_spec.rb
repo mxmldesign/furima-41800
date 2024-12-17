@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe OrderShipping, type: :model do
   before do
     user = FactoryBot.create(:user)
-    item = FactoryBot.build(:item)
+    item = FactoryBot.create(:item)
     @order_shipping = FactoryBot.build(:order_shipping, user_id: user.id, item_id: item.id)
   end
   describe '寄付情報の保存' do
@@ -19,6 +19,11 @@ RSpec.describe OrderShipping, type: :model do
     end
 
     context '内容に問題がある場合' do
+      it "tokenが空では登録できないこと" do
+        @order_shipping.token = nil
+        @order_shipping.valid?
+        expect(@order_shipping.errors.full_messages).to include("Token can't be blank")
+      end
       it 'post_codeが空だと保存できないこと' do
         @order_shipping.post_code = ''
         @order_shipping.valid?
