@@ -1,6 +1,7 @@
 class OrdersController < ApplicationController
   before_action :authenticate_user!, only: [:index, :create]
-  before_action :move_to_index
+  before_action :set_item, only: [:index, :create]
+  before_action :prevent_invalid_access, only: [:index, :create]
 
   def index
     gon.public_key = ENV["PAYJP_PUBLIC_KEY"]
@@ -27,12 +28,14 @@ class OrdersController < ApplicationController
     params.require(:order_shipping).permit(:post_code, :prefecture_id, :city, :street, :building, :phone_number).merge(user_id: current_user.id, item_id: @item.id, token: params[:token] )
   end
   
-  def move_to_index
+  def set_item
     @item = Item.find(params[:item_id])
-    return if @item.user != current_user
-
-    redirect_to controller: 'items', action: :index
   end
+
+  def prevent_invalid_access
+    redirect_to root_path if @item.user == current_user || @item.order.present?
+  end
+
   def pay_item
     Payjp.api_key = ENV["PAYJP_SECRET_KEY"]
     Payjp::Charge.create(
@@ -40,5 +43,5 @@ class OrdersController < ApplicationController
       card: order_params[:token],
       currency:'jpy'
     )
- end
+  end
 end
