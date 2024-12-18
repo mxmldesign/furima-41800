@@ -57,17 +57,17 @@ RSpec.describe OrderShipping, type: :model do
       it 'phone_numberが全角数字だと保存できないこと' do
         @order_shipping.phone_number = '２０００００００００'
         @order_shipping.valid?
-        expect(@order_shipping.errors.full_messages).to include('Phone number is not a number')
+        expect(@order_shipping.errors.full_messages).to include('Phone number is invalid')
       end
       it 'phone_numberが999999999未満では保存できないこと' do
         @order_shipping.phone_number = 999999999
         @order_shipping.valid?
-        expect(@order_shipping.errors.full_messages).to include('Phone number must be greater than or equal to 1000000000')
+        expect(@order_shipping.errors.full_messages).to include('Phone number is invalid')
       end
       it 'phone_numberが100,000,000を超過すると保存できないこと' do
         @order_shipping.phone_number = 100000000001
         @order_shipping.valid?
-        expect(@order_shipping.errors.full_messages).to include('Phone number must be less than or equal to 99999999999')
+        expect(@order_shipping.errors.full_messages).to include('Phone number is invalid')
       end
       it 'userが紐付いていないと保存できないこと' do
         @order_shipping.user_id = nil
